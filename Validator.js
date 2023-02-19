@@ -23,6 +23,12 @@ function Validator(options) {
         inputElement.onblur = function () {
           validate(inputElement, rule);
         };
+        inputElement.oninput = function () {
+          var errorElement =
+            inputElement.parentElement.querySelector(".form-message");
+          errorElement.innerText = "";
+          inputElement.parentElement.classList.remove("invalid");
+        };
       }
     });
   }
@@ -46,6 +52,16 @@ Validator.isEmail = function (selector) {
     test: function (value) {
       var regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
       return regex.test(value) ? undefined : "Trường này phải là email";
+    },
+  };
+};
+Validator.minLength = function (selector, min) {
+  return {
+    selector: selector,
+    test: function (value) {
+      return value.length >= min
+        ? undefined
+        : `Vui lòng nhập tối thiểu ${min} kí tự`;
     },
   };
 };
