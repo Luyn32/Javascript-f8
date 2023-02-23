@@ -1,4 +1,5 @@
 function Validator(options) {
+  var selectorRules = {};
   //ham thuc hiẹn validate
   function validate(inputElement, rule) {
     var errorElement =
@@ -37,31 +38,33 @@ function Validator(options) {
 // // nguyen tac cua ca rule
 // 1. khi co loi=> tra ra mesage loi
 // 2. khi hopj le => khong tra ra cai gi ca
-Validator.isRequired = function (selector) {
+Validator.isRequired = function (selector, message) {
   return {
     selector: selector,
     test: function (value) {
-      return value.trim() ? undefined : "Vui lòng nhập trường này";
+      return value.trim() ? undefined : message || "Vui lòng nhập trường này";
     },
   };
 };
 
-Validator.isEmail = function (selector) {
+Validator.isEmail = function (selector, message) {
   return {
     selector: selector,
     test: function (value) {
       var regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-      return regex.test(value) ? undefined : "Trường này phải là email";
+      return regex.test(value)
+        ? undefined
+        : message || "Trường này phải là email";
     },
   };
 };
-Validator.minLength = function (selector, min) {
+Validator.minLength = function (selector, min, message) {
   return {
     selector: selector,
     test: function (value) {
       return value.length >= min
         ? undefined
-        : `Vui lòng nhập tối thiểu ${min} kí tự`;
+        : message || `Vui lòng nhập tối thiểu ${min} kí tự`;
     },
   };
 };
